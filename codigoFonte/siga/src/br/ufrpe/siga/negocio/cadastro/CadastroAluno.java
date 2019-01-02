@@ -34,4 +34,16 @@ public class CadastroAluno {
 	public void apagar(Aluno entidade) throws RegistroNaoEncontradoException {
 		repAluno.apagar(entidade.getId());	
 	}
+
+	public Aluno login(String usuario) {
+		Aluno retorno = null;
+		
+		List<Aluno> lista= listar();
+		for (Aluno aluno : lista) {
+			if (usuario != null && usuario.equalsIgnoreCase(aluno.getNomeUsuario())) {
+				retorno= aluno;
+			}
+		}
+		return retorno;
+	}
 }

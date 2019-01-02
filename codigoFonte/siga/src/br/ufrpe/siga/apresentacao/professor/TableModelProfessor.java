@@ -1,33 +1,35 @@
-package br.ufrpe.siga.apresentacao.disciplina;
+package br.ufrpe.siga.apresentacao.professor;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.table.AbstractTableModel;
-import br.ufrpe.siga.negocio.entidade.Disciplina;
 
-public class TableModelDisciplina extends AbstractTableModel {
+import javax.swing.table.AbstractTableModel;
+
+import br.ufrpe.siga.negocio.entidade.Professor;
+
+public class TableModelProfessor extends AbstractTableModel {
 	
 	/**
 	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = 8633858949677031416L;
 	
-	private List<Disciplina> disciplinas;
+	private List<Professor> professors;
 	private String[] colunas = new String[] { 
 		"Cod", "Nome", "Nome usuario" 
 	};
 
 	/** Creates a new instance of TableModel */
-	public TableModelDisciplina(List<Disciplina> disciplinas) {
-		this.disciplinas = disciplinas;
+	public TableModelProfessor(List<Professor> professors) {
+		this.professors = professors;
 	}
 
-	public TableModelDisciplina() {
-		this.disciplinas = new ArrayList<Disciplina>();
+	public TableModelProfessor() {
+		this.professors = new ArrayList<Professor>();
 	}
 
 	public int getRowCount() {
-		return disciplinas.size();
+		return professors.size();
 	}
 
 	public int getColumnCount() {
@@ -44,12 +46,12 @@ public class TableModelDisciplina extends AbstractTableModel {
 		return String.class;
 	}
 
-	public void setValueAt(Disciplina aValue, int rowIndex) {
-		Disciplina disciplina = disciplinas.get(rowIndex);
+	public void setValueAt(Professor aValue, int rowIndex) {
+		Professor professor = professors.get(rowIndex);
 		
-		disciplina.setId( aValue.getId() );
-		disciplina.setNome( aValue.getNome() );
-		disciplina.setEmenta( aValue.getEmenta() );
+		professor.setId( aValue.getId() );
+		professor.setNome( aValue.getNome() );
+		professor.setNomeUsuario( aValue.getNomeUsuario() );
 		
 		fireTableCellUpdated(rowIndex, 0);
 		fireTableCellUpdated(rowIndex, 1);
@@ -58,15 +60,15 @@ public class TableModelDisciplina extends AbstractTableModel {
 
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		Disciplina disciplina = disciplinas.get(rowIndex);
+		Professor professor = professors.get(rowIndex);
 
 		switch (columnIndex) {
 		case 0:
-			disciplina.setId( Integer.parseInt(aValue.toString()) );
+			professor.setId( Integer.parseInt(aValue.toString()) );
 		case 1:
-			disciplina.setNome(aValue.toString());
+			professor.setNome(aValue.toString());
 		case 2:
-			disciplina.setEmenta( aValue.toString() );
+			professor.setNomeUsuario( aValue.toString() );
 					
 		default:
 			System.err.println("indice da coluna invalido");
@@ -75,20 +77,20 @@ public class TableModelDisciplina extends AbstractTableModel {
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Disciplina disciplinaSelecionado = disciplinas.get(rowIndex);
+		Professor professorSelecionado = professors.get(rowIndex);
 		String valueObject = null;
 		switch (columnIndex) {
 		case 0:
-			valueObject = String.valueOf(disciplinaSelecionado.getId());
+			valueObject = String.valueOf(professorSelecionado.getId());
 			break;
 		case 1:
-			valueObject = disciplinaSelecionado.getNome();
+			valueObject = professorSelecionado.getNome();
 			break;
 		case 2:
-			valueObject = disciplinaSelecionado.getEmenta();
+			valueObject = professorSelecionado.getNomeUsuario();
 			break;
 		default:
-			System.err.println("indice invalido para propriedade do bean Disciplina.class");
+			System.err.println("indice invalido para propriedade do bean Professor.class");
 		}
 		return valueObject;
 	}
@@ -98,34 +100,34 @@ public class TableModelDisciplina extends AbstractTableModel {
 		return false;
 	}
 
-	public Disciplina getDisciplina(int indiceLinha) {
-		return disciplinas.get(indiceLinha);
+	public Professor getProfessor(int indiceLinha) {
+		return professors.get(indiceLinha);
 	}
 
-	public void addDisciplina(Disciplina disciplina) {
-		disciplinas.add(disciplina);
+	public void addProfessor(Professor professor) {
+		professors.add(professor);
 		int ultimoIndice = getRowCount() - 1;
 		fireTableRowsInserted(ultimoIndice, ultimoIndice);
 	}
 
-	public void removeDisciplina(int indiceLinha) {
-		disciplinas.remove(indiceLinha);
+	public void removeProfessor(int indiceLinha) {
+		professors.remove(indiceLinha);
 		fireTableRowsDeleted(indiceLinha, indiceLinha);
 	}
 
-	public void addListaDeDisciplinas(List<Disciplina> novosDisciplinas) {
+	public void addListaDeProfessors(List<Professor> novosProfessors) {
 		int tamanhoAntigo = getRowCount();
-		disciplinas.addAll(novosDisciplinas);
+		professors.addAll(novosProfessors);
 		fireTableRowsInserted(tamanhoAntigo, getRowCount() - 1);
 	}
 
 	public void limpar() {
-		disciplinas.clear();
+		professors.clear();
 		fireTableDataChanged();
 	}
 
 	public boolean isEmpty() {
-		return disciplinas.isEmpty();
+		return professors.isEmpty();
 	}
 
 }

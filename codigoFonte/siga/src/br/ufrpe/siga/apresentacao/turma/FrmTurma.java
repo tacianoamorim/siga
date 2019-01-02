@@ -1,4 +1,4 @@
-package br.ufrpe.siga.apresentacao.disciplina;
+package br.ufrpe.siga.apresentacao.turma;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -28,7 +28,7 @@ import br.ufrpe.siga.negocio.entidade.Aluno;
 import br.ufrpe.siga.negocio.entidade.Disciplina;
 import br.ufrpe.siga.util.Constantes;
 
-public class FrmDisciplina extends JDialog {
+public class FrmTurma extends JDialog {
 
 	/**
 	 * serialVersionUID
@@ -48,9 +48,9 @@ public class FrmDisciplina extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public FrmDisciplina() {
+	public FrmTurma() {
 		setModal(true);
-		setTitle("Cadastro de Disciplina");
+		setTitle("Cadastro de Turma");
 		setBounds(100, 100, 683, 499);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -81,7 +81,7 @@ public class FrmDisciplina extends JDialog {
 		txtEmenta.setColumns(10);
 		
 		btnSalvar = new JButton("Salvar");
-		btnSalvar.setIcon(new ImageIcon(FrmDisciplina.class.getResource("/image/iconfinder_Download_728930 (1).png")));
+		btnSalvar.setIcon(new ImageIcon(FrmTurma.class.getResource("/image/iconfinder_Download_728930 (1).png")));
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -110,7 +110,7 @@ public class FrmDisciplina extends JDialog {
 		
 		btnApagar = new JButton("Apagar");
 		btnApagar.setHorizontalAlignment(SwingConstants.LEFT);
-		btnApagar.setIcon(new ImageIcon(FrmDisciplina.class.getResource("/image/apagar_32.png")));
+		btnApagar.setIcon(new ImageIcon(FrmTurma.class.getResource("/image/apagar_32.png")));
 		btnApagar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 		    	try {

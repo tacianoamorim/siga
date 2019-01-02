@@ -51,8 +51,11 @@ public class Fachada {
 		try {
 			if ( Constantes.PERFIL_ALUNO.equalsIgnoreCase(TipoUsuario) ) {
 				if ( Constantes.PERFIL_ALUNO.equalsIgnoreCase(TipoUsuario) ) {
-					if ( senha != null && "ADM".equalsIgnoreCase(senha.trim()) &&
-							"ADM".equalsIgnoreCase(usuario) )
+					
+					Aluno aluno= Fachada.getInstance().loginAluno(usuario);
+					if ( senha != null && 
+							aluno.getNomeUsuario().equalsIgnoreCase(usuario.trim()) &&
+							aluno.getSenha().equalsIgnoreCase(senha.trim()) )
 						logado= true;
 					else 
 						throw new LoginInvalidoException();
@@ -60,8 +63,11 @@ public class Fachada {
 				
 			} else if ( Constantes.LOGIN_NOVO_CADASTRO_PROFESSOR.equalsIgnoreCase(TipoUsuario) ) {
 				if ( Constantes.PERFIL_PROFESSOR.equalsIgnoreCase(TipoUsuario) ) {
-					if ( senha != null && "ADM".equalsIgnoreCase(senha.trim()) &&
-							"ADM".equalsIgnoreCase(usuario) )
+					
+					Professor professor= Fachada.getInstance().loginProfessor(usuario);
+					if ( senha != null && 
+							professor.getNomeUsuario().equalsIgnoreCase(usuario.trim()) &&
+							professor.getSenha().equalsIgnoreCase(senha.trim()) )
 						logado= true;
 					else 
 						throw new LoginInvalidoException();
@@ -85,8 +91,7 @@ public class Fachada {
 		
 		return logado;
 	}
-	
-	
+
 	/**
 	 * Inserir professor
 	 * @param professor
@@ -103,6 +108,18 @@ public class Fachada {
 		return cadProfessor.listar();
 	}
 	
+	/**
+	 * Apagar registro
+	 * @throws RegistroNaoEncontradoException 
+	 */
+	public void apagar(Professor entidade) throws RegistroNaoEncontradoException {
+		cadProfessor.apagar(entidade);
+	}	
+	
+	private Professor loginProfessor(String usuario) {
+		return cadProfessor.login(usuario);
+	}
+
 	/**
 	 * Inserir aluno
 	 * @param aluno
@@ -125,6 +142,10 @@ public class Fachada {
 	 */
 	public void apagar(Aluno entidade) throws RegistroNaoEncontradoException {
 		cadAluno.apagar(entidade);
+	}
+	
+	private Aluno loginAluno(String usuario) {
+		return cadAluno.login(usuario);
 	}
 	
 	/**

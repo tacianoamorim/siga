@@ -9,5 +9,6 @@ public interface RepositorioProfessor {
 	public Object[] listar();
 	public void inserir(Professor professor);
 	public void alterar(Professor professor) throws RegistroNaoEncontradoException;
+	public void apagar(int id) throws RegistroNaoEncontradoException;
 	
 }

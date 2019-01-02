@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.ufrpe.siga.dado.RepositorioProfessor;
+import br.ufrpe.siga.dado.excecao.RegistroNaoEncontradoException;
 import br.ufrpe.siga.dado.repositorio.RepositorioProfessorArray;
 import br.ufrpe.siga.negocio.entidade.Professor;
 
@@ -26,7 +27,23 @@ public class CadastroProfessor {
 		return lista;
 	}
 
-	public void inserir(Professor professor) {
-		repProfessor.inserir(professor);		
+	public void inserir(Professor entidade) {
+		repProfessor.inserir(entidade);		
 	}
+	
+	public void apagar(Professor entidade) throws RegistroNaoEncontradoException {
+		repProfessor.apagar(entidade.getId());	
+	}	
+	
+	public Professor login(String usuario) {
+		Professor retorno = null;
+		
+		List<Professor> lista= listar();
+		for (Professor professor : lista) {
+			if (usuario != null && usuario.equalsIgnoreCase(professor.getNomeUsuario())) {
+				retorno= professor;
+			}
+		}
+		return retorno;
+	}	
 }

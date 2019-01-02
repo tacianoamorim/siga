@@ -23,7 +23,9 @@ import javax.swing.border.EmptyBorder;
 import br.ufrpe.siga.apresentacao.aluno.FrmAluno;
 import br.ufrpe.siga.negocio.Fachada;
 import br.ufrpe.siga.negocio.entidade.Aluno;
+import br.ufrpe.siga.negocio.entidade.Disciplina;
 import br.ufrpe.siga.negocio.entidade.Professor;
+import br.ufrpe.siga.negocio.entidade.Turma;
 import br.ufrpe.siga.util.Constantes;
 
 public class FrmLogin extends JDialog {
@@ -217,14 +219,33 @@ public class FrmLogin extends JDialog {
 		Professor professor02= new Professor(0, "Maria Eduarda", new Date(), "maria", "123","2 Prof");
 		Fachada.getInstance().inserir(professor02);
 		
+		// Disciplina
+		Disciplina disciplina01= new Disciplina(0, "Matemática", "1+2+3+4");
+		Fachada.getInstance().inserir(disciplina01);
+		Disciplina disciplina02= new Disciplina(0, "Portugues", "blablabla");
+		Fachada.getInstance().inserir(disciplina02);
+		Disciplina disciplina03= new Disciplina(0, "Ciencias", "Lua e sol");
+		Fachada.getInstance().inserir(disciplina03);
+		Disciplina disciplina04= new Disciplina(0, "Geografia", "Norte e sul");
+		Fachada.getInstance().inserir(disciplina04);
+		
 		// Turmas
-		////Turma turma01= new Turma()
+		Turma turma01= new Turma(0, disciplina01, professor01, 40);
+		Fachada.getInstance().inserir(turma01);
+		Turma turma02= new Turma(0, disciplina02, professor01, 40);
+		Fachada.getInstance().inserir(turma02);
+		Turma turma03= new Turma(0, disciplina03, professor02, 40);
+		Fachada.getInstance().inserir(turma03);
+		Turma turma04= new Turma(0, disciplina04, professor02, 40);
+		Fachada.getInstance().inserir(turma04);		
 		
 		// Aluno
 		Aluno aluno01= new Aluno(0, "Andre da Silva", new Date(), "andre", "123",1);
 		Fachada.getInstance().inserir(aluno01);
 		Aluno aluno02= new Aluno(0, "Maria Clara", new Date(), "maria", "123",2);
-		Fachada.getInstance().inserir(aluno02);		
+		Fachada.getInstance().inserir(aluno02);	
+		Aluno aluno03= new Aluno(0, "Paulo Marques", new Date(), "paulo", "123",3);
+		Fachada.getInstance().inserir(aluno03);			
 		//Fachada.getInstance().inserir(new Aluno () );
 		
 	}	

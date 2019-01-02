@@ -6,7 +6,8 @@ import br.ufrpe.siga.negocio.entidade.Entidade;
 public abstract class RepositorioArray<E extends Entidade> {
 	
 	protected Object[] elementos= new Object[100];
-	private int idx= 1;
+	private int idx= 0;
+	private int id= 1;
 	
 	@SuppressWarnings("unchecked")
 	public E buscar(int id) throws RegistroNaoEncontradoException {
@@ -24,6 +25,7 @@ public abstract class RepositorioArray<E extends Entidade> {
 	}
 
 	public void inserir(E e) {
+		e.setId(id++);
 		elementos[idx++]= e;
 	}
 

@@ -15,6 +15,9 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
 import br.ufrpe.siga.apresentacao.aluno.FrmAluno;
+import br.ufrpe.siga.apresentacao.disciplina.FrmDisciplina;
+import br.ufrpe.siga.apresentacao.professor.FrmProfessor;
+import br.ufrpe.siga.apresentacao.turma.FrmTurma;
 import br.ufrpe.siga.util.Constantes;
 
 public class FrmPrincipal {
@@ -25,7 +28,7 @@ public class FrmPrincipal {
 	public static String acaoInicializacao;
 	public static String perfilLogado;
 	private final JToolBar tbProfessor = new JToolBar();
-	private JButton tbBtnCadastrarAluno;
+	private JButton tbBtnAluno;
 	private JButton tbBtnProfessor;
 	private JPanel panel;
 	private JSeparator separator;
@@ -52,12 +55,19 @@ public class FrmPrincipal {
 	 */
 	private void carregar() {
 		if (Constantes.PERFIL_ALUNO.equalsIgnoreCase(FrmPrincipal.perfilLogado)) {
-			tbBtnCadastrarAluno.setEnabled(true);
+			tbBtnAluno.setEnabled(true);
+			tbBtnRendimentoEscolar.setEnabled(false);			
 		} else if (Constantes.PERFIL_PROFESSOR.equalsIgnoreCase(FrmPrincipal.perfilLogado)) {
 			tbBtnProfessor.setEnabled(true);
+			tbBtnAluno.setEnabled(true);
+			tbBtnRendimentoEscolar.setEnabled(true);			
+
 		} else {
 			tbBtnProfessor.setEnabled(true);
-			tbBtnCadastrarAluno.setEnabled(true);
+			tbBtnAluno.setEnabled(true);
+    		tbBtnDisciplina.setEnabled(true);
+    		tbBtnTurma.setEnabled(true);
+			tbBtnRendimentoEscolar.setEnabled(true);				
 		}
 		
 	}
@@ -86,17 +96,17 @@ public class FrmPrincipal {
 	    panel.add(tbProfessor);
 	    tbProfessor.setFloatable(false);
 	    
-	    tbBtnCadastrarAluno = new JButton(" Aluno   ");
-	    tbBtnCadastrarAluno.addActionListener(new ActionListener() {
+	    tbBtnAluno = new JButton(" Aluno   ");
+	    tbBtnAluno.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent arg0) {
 	    		FrmAluno frmCadastroAluno= new FrmAluno();
 	    		frmCadastroAluno.setVisible(true);
 	    	}
 	    });
-	    tbBtnCadastrarAluno.setEnabled(false);
-	    tbBtnCadastrarAluno.setIcon(new ImageIcon(FrmPrincipal.class.getResource("/image/aluno_32.png")));
-	    tbBtnCadastrarAluno.setBackground(Color.WHITE);
-	    tbProfessor.add(tbBtnCadastrarAluno);
+	    tbBtnAluno.setEnabled(false);
+	    tbBtnAluno.setIcon(new ImageIcon(FrmPrincipal.class.getResource("/image/aluno_32.png")));
+	    tbBtnAluno.setBackground(Color.WHITE);
+	    tbProfessor.add(tbBtnAluno);
 	    
 	    separator = new JSeparator();
 	    separator.setOrientation(SwingConstants.VERTICAL);
@@ -107,6 +117,8 @@ public class FrmPrincipal {
 	    tbBtnProfessor.setBackground(Color.WHITE);
 	    tbBtnProfessor.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
+	    		FrmProfessor frmProfessor= new FrmProfessor();
+	    		frmProfessor.setVisible(true);
 	    	}
 	    });
 	    tbBtnProfessor.setIcon(new ImageIcon(FrmPrincipal.class.getResource("/image/professor_32.png")));
@@ -119,6 +131,8 @@ public class FrmPrincipal {
 	    tbBtnDisciplina = new JButton(" Disciplina   ");
 	    tbBtnDisciplina.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
+	    		FrmDisciplina frmDisciplina= new FrmDisciplina();
+	    		frmDisciplina.setVisible(true);
 	    	}
 	    });
 	    tbBtnDisciplina.setEnabled(false);
@@ -133,6 +147,8 @@ public class FrmPrincipal {
 	    tbBtnTurma = new JButton(" Turma   ");
 	    tbBtnTurma.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
+	    		FrmTurma frmTurma= new FrmTurma();
+	    		frmTurma.setVisible(true);
 	    	}
 	    });
 	    tbBtnTurma.setEnabled(false);
@@ -165,7 +181,10 @@ public class FrmPrincipal {
 	    	public void actionPerformed(ActionEvent arg0) {
 	    		FrmPrincipal.perfilLogado= null;
 	    		tbBtnProfessor.setEnabled(false);
-	    		tbBtnCadastrarAluno.setEnabled(false);
+	    		tbBtnAluno.setEnabled(false);
+	    		tbBtnDisciplina.setEnabled(false);
+	    		tbBtnTurma.setEnabled(false);
+	    		tbBtnRendimentoEscolar.setEnabled(false);
 	    		frame.setVisible(false);
 	    	}
 	    	
