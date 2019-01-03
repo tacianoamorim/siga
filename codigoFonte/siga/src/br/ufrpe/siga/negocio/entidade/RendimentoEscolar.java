@@ -2,7 +2,7 @@ package br.ufrpe.siga.negocio.entidade;
 
 import java.io.Serializable;
 
-public class RedimentoEscolar extends Entidade implements Serializable{
+public class RendimentoEscolar extends Entidade implements Serializable{
 	/**
 	 * serialVersionUID
 	 */
@@ -15,7 +15,7 @@ public class RedimentoEscolar extends Entidade implements Serializable{
 	private String[] trabalhos = new String[4];
 	private String[] notaTrabalhos = new String[4];
 	
-	public RedimentoEscolar() {
+	public RendimentoEscolar() {
 		super();
 	}
 
@@ -23,7 +23,7 @@ public class RedimentoEscolar extends Entidade implements Serializable{
 	 * @param turma
 	 * @param aluno
 	 */
-	public RedimentoEscolar(int id, Turma turma, Aluno aluno) {
+	public RendimentoEscolar(int id, Turma turma, Aluno aluno) {
 		super();
 		super.setId(id);
 		this.turma = turma;
@@ -36,7 +36,7 @@ public class RedimentoEscolar extends Entidade implements Serializable{
 	 * @param nota1va
 	 * @param nota2va
 	 */
-	public RedimentoEscolar(int id, Turma turma, Aluno aluno, int nota1va, int nota2va) {
+	public RendimentoEscolar(int id, Turma turma, Aluno aluno, int nota1va, int nota2va) {
 		super();
 		super.setId(id);
 		this.turma = turma;

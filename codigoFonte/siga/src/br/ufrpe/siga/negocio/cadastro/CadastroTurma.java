@@ -6,6 +6,10 @@ import java.util.List;
 import br.ufrpe.siga.dado.RepositorioTurma;
 import br.ufrpe.siga.dado.excecao.RegistroNaoEncontradoException;
 import br.ufrpe.siga.dado.repositorio.RepositorioTurmaArray;
+import br.ufrpe.siga.negocio.Fachada;
+import br.ufrpe.siga.negocio.entidade.Aluno;
+import br.ufrpe.siga.negocio.entidade.Professor;
+import br.ufrpe.siga.negocio.entidade.RendimentoEscolar;
 import br.ufrpe.siga.negocio.entidade.Turma;
 
 public class CadastroTurma {
@@ -33,5 +37,27 @@ public class CadastroTurma {
 
 	public void apagar(Turma entidade) throws RegistroNaoEncontradoException {
 		repTurma.apagar(entidade.getId());	
+	}
+
+	public List<Turma> listarTurmasProfessor(Professor professor) {
+		List<Turma> turmas= new ArrayList<Turma>();
+		List<Turma> lista= Fachada.getInstance().listarTurmas();
+		for (Turma turma : lista) {
+			if (professor != null && professor.getId() == turma.getProfessor().getId() ) {
+				turmas.add( turma );
+			}
+		}
+		return turmas;	
+	}
+	
+	public List<Turma> listarTurmasAluno(Aluno aluno) {
+		List<Turma> turmas= new ArrayList<Turma>();
+		List<RendimentoEscolar> lista= Fachada.getInstance().listarRendimentoEscolar();
+		for (RendimentoEscolar rendimentoEscolar : lista) {
+			if ( aluno != null && aluno.getId() == rendimentoEscolar.getAluno().getId() ) {
+				turmas.add( rendimentoEscolar.getTurma() );
+			}
+		}
+		return turmas;	
 	}
 }

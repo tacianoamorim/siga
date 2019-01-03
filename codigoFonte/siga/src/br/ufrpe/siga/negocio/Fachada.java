@@ -7,11 +7,12 @@ import br.ufrpe.siga.dado.excecao.RegistroNaoEncontradoException;
 import br.ufrpe.siga.negocio.cadastro.CadastroAluno;
 import br.ufrpe.siga.negocio.cadastro.CadastroDisciplina;
 import br.ufrpe.siga.negocio.cadastro.CadastroProfessor;
-import br.ufrpe.siga.negocio.cadastro.CadastroRedimentoEscolar;
+import br.ufrpe.siga.negocio.cadastro.CadastroRendimentoEscolar;
 import br.ufrpe.siga.negocio.cadastro.CadastroTurma;
 import br.ufrpe.siga.negocio.entidade.Aluno;
 import br.ufrpe.siga.negocio.entidade.Disciplina;
 import br.ufrpe.siga.negocio.entidade.Professor;
+import br.ufrpe.siga.negocio.entidade.RendimentoEscolar;
 import br.ufrpe.siga.negocio.entidade.Turma;
 import br.ufrpe.siga.negocio.excecao.LoginInvalidoException;
 import br.ufrpe.siga.util.Constantes;
@@ -23,14 +24,14 @@ public class Fachada {
 	private CadastroAluno cadAluno;
 	private CadastroTurma cadTurma;
 	private CadastroDisciplina cadDisciplina;
-	private CadastroRedimentoEscolar cadRedimentoEscolar;
+	private CadastroRendimentoEscolar cadRendimentoEscolar;
 
 	private Fachada() {
 		this.cadProfessor= new CadastroProfessor();
 		this.cadAluno= new CadastroAluno();
 		this.cadTurma= new CadastroTurma();
 		this.cadDisciplina= new CadastroDisciplina();
-		this.cadRedimentoEscolar= new CadastroRedimentoEscolar();
+		this.cadRendimentoEscolar= new CadastroRendimentoEscolar();
 	}
 	
 	public static Fachada getInstance() {
@@ -47,36 +48,34 @@ public class Fachada {
 	public boolean login(String usuario, String senha, String TipoUsuario) 
 			throws LoginInvalidoException {
 		boolean logado= false;
+		FrmPrincipal.alunoLogado= null;
+		FrmPrincipal.professorLogado= null;
 		
 		try {
 			if ( Constantes.PERFIL_ALUNO.equalsIgnoreCase(TipoUsuario) ) {
-				if ( Constantes.PERFIL_ALUNO.equalsIgnoreCase(TipoUsuario) ) {
-					
-					Aluno aluno= Fachada.getInstance().loginAluno(usuario);
-					if ( senha != null && 
-							aluno.getNomeUsuario().equalsIgnoreCase(usuario.trim()) &&
-							aluno.getSenha().equalsIgnoreCase(senha.trim()) )
-						logado= true;
-					else 
-						throw new LoginInvalidoException();
-				}
+				Aluno aluno= Fachada.getInstance().loginAluno(usuario);
+				if ( senha != null && 
+						aluno.getNomeUsuario().equalsIgnoreCase(usuario.trim()) &&
+						aluno.getSenha().equalsIgnoreCase(senha.trim()) ) {
+					logado= true;
+					FrmPrincipal.alunoLogado= aluno;
+				} else 
+					throw new LoginInvalidoException();
 				
-			} else if ( Constantes.LOGIN_NOVO_CADASTRO_PROFESSOR.equalsIgnoreCase(TipoUsuario) ) {
-				if ( Constantes.PERFIL_PROFESSOR.equalsIgnoreCase(TipoUsuario) ) {
-					
-					Professor professor= Fachada.getInstance().loginProfessor(usuario);
-					if ( senha != null && 
-							professor.getNomeUsuario().equalsIgnoreCase(usuario.trim()) &&
-							professor.getSenha().equalsIgnoreCase(senha.trim()) )
-						logado= true;
-					else 
-						throw new LoginInvalidoException();
-				}
+			} else if ( Constantes.PERFIL_PROFESSOR.equalsIgnoreCase(TipoUsuario) ) {
+				Professor professor= Fachada.getInstance().loginProfessor(usuario);
+				if ( senha != null && 
+						professor.getNomeUsuario().equalsIgnoreCase(usuario.trim()) &&
+						professor.getSenha().equalsIgnoreCase(senha.trim()) ) {
+					logado= true;
+					FrmPrincipal.professorLogado= professor;
+				} else 
+					throw new LoginInvalidoException();
 				
 			} else {
 				if ( Constantes.PERFIL_ADM.equalsIgnoreCase(TipoUsuario) ) {
 					if ( senha != null && "ADM".equalsIgnoreCase(senha.trim()) &&
-							"ADM".equalsIgnoreCase(usuario) )
+							"ADM".equalsIgnoreCase(usuario) ) 
 						logado= true;
 					else 
 						throw new LoginInvalidoException();
@@ -172,6 +171,14 @@ public class Fachada {
 		cadTurma.apagar(entidade);
 	}	
 	
+	public List<Turma> listarTurmasProfessor(Professor professor) {
+		return cadTurma.listarTurmasProfessor(professor);
+	}
+	
+	public List<Turma> listarTurmasAluno(Aluno aluno) {
+		return cadTurma.listarTurmasAluno(aluno);
+	}
+	
 	/**
 	 * Inserir disciplina
 	 * @param Disciplina
@@ -194,5 +201,35 @@ public class Fachada {
 	 */
 	public void apagar(Disciplina entidade) throws RegistroNaoEncontradoException {
 		cadDisciplina.apagar(entidade);
+	}
+
+	/**
+	 * Lista todos os registros
+	 * @return
+	 */
+	public List<RendimentoEscolar> listarRendimentoEscolar() {
+		return cadRendimentoEscolar.listar();
+	}	
+	
+	/**
+	 * Inserir rendimentoEscolar
+	 * @param RendimentoEscolar
+	 */
+	public void inserir(RendimentoEscolar entidade) {
+		cadRendimentoEscolar.inserir(entidade);
+	}
+
+	/**
+	 * Listar todos os rendimentos escolares por turma
+	 * @param turma
+	 * @return List<RendimentoEscolar>
+	 */
+	public List<RendimentoEscolar> listarRendimentoEscolarPorTurma(Turma turma) {
+		return cadRendimentoEscolar.listarRendimentoEscolarPorTurma(turma);
+	}	
+	
+	public RendimentoEscolar buscarRendimentoEscolarPorId(int id) 
+			throws RegistroNaoEncontradoException {
+		return cadRendimentoEscolar.buscarPorId(id);
 	}	
 }
