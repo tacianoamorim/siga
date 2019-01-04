@@ -60,4 +60,9 @@ public class CadastroTurma {
 		}
 		return turmas;	
 	}
+
+	public Turma buscarTurma(int id) throws RegistroNaoEncontradoException {
+		return repTurma.buscar(id);
+	}
+
 }

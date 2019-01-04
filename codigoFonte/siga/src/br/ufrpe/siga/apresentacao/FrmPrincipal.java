@@ -6,14 +6,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JToolBar;
@@ -28,6 +28,7 @@ import javax.swing.tree.TreeSelectionModel;
 import br.ufrpe.siga.apresentacao.aluno.FrmAluno;
 import br.ufrpe.siga.apresentacao.disciplina.FrmDisciplina;
 import br.ufrpe.siga.apresentacao.professor.FrmProfessor;
+import br.ufrpe.siga.apresentacao.rendimentoEscolar.FrmRendimentoEscolar;
 import br.ufrpe.siga.apresentacao.turma.FrmTurma;
 import br.ufrpe.siga.negocio.Fachada;
 import br.ufrpe.siga.negocio.entidade.Aluno;
@@ -63,7 +64,6 @@ public class FrmPrincipal {
 	private JTree tree;
 	
 	private DefaultMutableTreeNode root;
-	private int idRendimentoSelecionado;
 
 
 	/**
@@ -80,12 +80,8 @@ public class FrmPrincipal {
 	 */
 	private void carregar() {
 		if (Constantes.PERFIL_ALUNO.equalsIgnoreCase(FrmPrincipal.perfilLogado)) {
-			tbBtnAluno.setEnabled(true);
-			tbBtnRendimentoEscolar.setEnabled(false);			
+			
 		} else if (Constantes.PERFIL_PROFESSOR.equalsIgnoreCase(FrmPrincipal.perfilLogado)) {
-			tbBtnProfessor.setEnabled(true);
-			tbBtnAluno.setEnabled(true);
-			tbBtnRendimentoEscolar.setEnabled(true);			
 
 		} else {
 			tbBtnProfessor.setEnabled(true);
@@ -96,7 +92,6 @@ public class FrmPrincipal {
 		}
 		tbBtnSair.setEnabled(true);
 	}
-	
 
 
 	/**
@@ -239,16 +234,40 @@ public class FrmPrincipal {
 	        public void valueChanged(TreeSelectionEvent e) {
 			    TreePath[] paths = tree.getSelectionPaths();
 		        for (TreePath path : paths) {
-		        	
-		        	String texto= path.getLastPathComponent().toString();
-		        	String numero= texto.substring(7,9);
 		        	try {
-						int id= new Integer(numero);
-						RendimentoEscolar rendEsc= Fachada.getInstance()
-								.buscarRendimentoEscolarPorId(id);
-						
+		        		
+		        		// Caso click em um no de aluno
+		        		String texto= path.getLastPathComponent().toString();
+		        		String numero= texto.substring(7,9);
+		        		int id= new Integer(numero);
+		        		if (texto.contains("Aluno")) {
+							RendimentoEscolar rendEsc= Fachada.getInstance()
+									.buscarRendimentoEscolarPorId(id);
+							
+							FrmRendimentoEscolar dialog = new FrmRendimentoEscolar( rendEsc );
+							dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+							dialog.setVisible(true);
+		        		}
+		        		
+		        		// Caso click em um no de turma
+		        		if (texto.contains("Turma")) {
+		        			if (FrmPrincipal.perfilLogado.equalsIgnoreCase(Constantes.PERFIL_ALUNO)) {
+		        				if ( !Fachada.getInstance().alunoMatriculadoTurma(id, FrmPrincipal.alunoLogado ) ) {
+		        					
+		        					int input = JOptionPane.showConfirmDialog(null, "Deseja se matricular nessa turma?");
+		        					if ( input == 0 ) {
+		        						Turma turma= Fachada.getInstance().buscarTurma(id);
+		        						
+		        						RendimentoEscolar rendEscolar09= new RendimentoEscolar(0, turma, alunoLogado);
+		        						Fachada.getInstance().inserir(rendEscolar09);
+		        						carregar( root );
+		        					}
+		        				} 
+		        			}
+		        		}
+		        		
 					} catch (Exception e2) {
-						// TODO: handle exception
+						//e2.printStackTrace();
 					}
 		        }
 	        }
@@ -270,14 +289,17 @@ public class FrmPrincipal {
 		// Carregar as turmas
 		List<Turma> turmas= new ArrayList<Turma>();
 		if (Constantes.PERFIL_ALUNO.equalsIgnoreCase(FrmPrincipal.perfilLogado)) {
-			turmas= Fachada.getInstance().listarTurmasAluno(alunoLogado);
+			turmas= Fachada.getInstance().listarTurmas();
 			
 		} else if (Constantes.PERFIL_PROFESSOR.equalsIgnoreCase(FrmPrincipal.perfilLogado)) {
 			turmas= Fachada.getInstance().listarTurmasProfessor(professorLogado);
 		} 		
 		
 		for (Turma turma : turmas) {
-			DefaultMutableTreeNode node = new DefaultMutableTreeNode(turma.getDisciplina().getNome());
+			DefaultMutableTreeNode node = new DefaultMutableTreeNode(
+					"Turma: "+ FrmPrincipal.completeToLeft(
+							turma.getDisciplina().getId() + "",'0' ,2)
+					 +" " + turma.getDisciplina().getNome());
 			root.add( node );
 			
 			// buscar os alunos da turma
@@ -302,4 +324,5 @@ public class FrmPrincipal {
 		}
 		return result;
 	}
+
 }

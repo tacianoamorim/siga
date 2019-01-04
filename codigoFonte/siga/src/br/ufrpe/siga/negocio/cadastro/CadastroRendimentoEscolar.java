@@ -7,6 +7,7 @@ import br.ufrpe.siga.dado.RepositorioRendimentoEscolar;
 import br.ufrpe.siga.dado.excecao.RegistroNaoEncontradoException;
 import br.ufrpe.siga.dado.repositorio.RepositorioRendimentoEscolarArray;
 import br.ufrpe.siga.negocio.Fachada;
+import br.ufrpe.siga.negocio.entidade.Aluno;
 import br.ufrpe.siga.negocio.entidade.RendimentoEscolar;
 import br.ufrpe.siga.negocio.entidade.Turma;
 
@@ -45,7 +46,23 @@ public class CadastroRendimentoEscolar {
 	}
 
 	public RendimentoEscolar buscarPorId(int id) throws RegistroNaoEncontradoException {
-		// TODO Auto-generated method stub
 		return repRendimentoEscolar.buscar(id);
+	}
+
+	public void alterar(RendimentoEscolar entidade) throws RegistroNaoEncontradoException {
+		repRendimentoEscolar.alterar(entidade);
+	}
+
+	public boolean alunoMatriculadoTurma(int idTurma, Aluno aluno) {
+		boolean alunoMatriculado= false;
+		
+		List<RendimentoEscolar> lista= Fachada.getInstance().listarRendimentoEscolar();
+		for (RendimentoEscolar rendimentoEscolar : lista) {
+			if ( rendimentoEscolar.getTurma().getId() == idTurma )
+				if ( aluno != null && aluno.getId() == rendimentoEscolar.getAluno().getId() ) {
+					alunoMatriculado= true;
+				}
+		}
+		return alunoMatriculado;
 	}
 }

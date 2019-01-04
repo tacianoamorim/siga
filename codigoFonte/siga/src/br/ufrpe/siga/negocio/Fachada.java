@@ -179,6 +179,10 @@ public class Fachada {
 		return cadTurma.listarTurmasAluno(aluno);
 	}
 	
+	public Turma buscarTurma(int id) throws RegistroNaoEncontradoException {
+		return cadTurma.buscarTurma(id);
+	}
+	
 	/**
 	 * Inserir disciplina
 	 * @param Disciplina
@@ -232,4 +236,13 @@ public class Fachada {
 			throws RegistroNaoEncontradoException {
 		return cadRendimentoEscolar.buscarPorId(id);
 	}	
+	
+	public void alterar(RendimentoEscolar rendimentoEscolar) throws RegistroNaoEncontradoException {
+		cadRendimentoEscolar.alterar(rendimentoEscolar) ;
+	}
+
+	public boolean alunoMatriculadoTurma(int idTurma, Aluno aluno) {
+		return cadRendimentoEscolar.alunoMatriculadoTurma(idTurma, aluno) ;
+	}
+
 }

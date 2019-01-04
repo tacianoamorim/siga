@@ -13,7 +13,7 @@ public class RendimentoEscolar extends Entidade implements Serializable{
 	private int nota1VA;
 	private int nota2VA;
 	private String[] trabalhos = new String[4];
-	private String[] notaTrabalhos = new String[4];
+	private float[] notaTrabalhos = new float[4];
 	
 	public RendimentoEscolar() {
 		super();
@@ -80,10 +80,10 @@ public class RendimentoEscolar extends Entidade implements Serializable{
 		this.trabalhos = trabalhos;
 	}
 
-	public String[] getNotaTrabalhos() {
+	public float[] getNotaTrabalhos() {
 		return notaTrabalhos;
 	}
-	public void setNotaTrabalhos(String[] notaTrabalhos) {
+	public void setNotaTrabalhos(float[] notaTrabalhos) {
 		this.notaTrabalhos = notaTrabalhos;
 	}
 

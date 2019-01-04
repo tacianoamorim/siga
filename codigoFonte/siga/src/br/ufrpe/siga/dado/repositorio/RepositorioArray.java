@@ -15,6 +15,7 @@ public abstract class RepositorioArray<E extends Entidade> {
 		for (int i = 0; i < elementos.length; i++) {
 			if ( id == ( (E) elementos[i] ).getId() ) {
 				elemento= (E) elementos[i];
+				break;
 			}
 		}
 		return elemento;
@@ -32,8 +33,9 @@ public abstract class RepositorioArray<E extends Entidade> {
 	@SuppressWarnings("unchecked")
 	public void alterar(E e) throws RegistroNaoEncontradoException {
 		for (int i = 0; i < elementos.length; i++) {
-			if ( e.getId() == ( (E) elementos[i] ).getId()) {
+			if ( elementos[i] != null && e.getId() == ( (E) elementos[i] ).getId()) {
 				elementos[i]= e;
+				break;
 			}
 		}
 	}
